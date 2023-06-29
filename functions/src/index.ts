@@ -41,7 +41,7 @@ export const getShows = functions.https.onCall(async(data,context)=>{
     docs.forEach((doc)=>{
         const movie = doc.data();
         movie.id = doc.id;
-
+        
         output.movies.push(movie);
     })
     
