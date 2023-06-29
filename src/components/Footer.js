@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Container, Row, Col} from 'react-bootstrap'
+import AddMovie from './AddMovie'
 
 const logoUrl = "https://1000logos.net/wp-content/uploads/2017/05/Netflix-Logo.png"
 
@@ -17,9 +18,11 @@ const Footer = ()=>{
                             className="d-inline-block align-top"
                             />{' '}
                     </Col>
-                    <Col xs={12}>
+                    <Col xs={12} md={3} lg={3} style={{flex:'1', flexFlow:'column'}}>
+                        <h4>Administration</h4>
+                        <AddMovie></AddMovie>
                     </Col>
-                    <Col xs={12}>
+                    <Col xs={12} md={3} lg={3}>
                     </Col>
                 </Row>
             </Container>

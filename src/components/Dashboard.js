@@ -3,6 +3,7 @@ import React, { Component , useState, useEffect} from 'react';
 import {Row, Col, Container} from 'react-bootstrap'
 import AddMovieModel from './AddMovie' 
 import MovieCard from './MovieItem'
+import Wallpaper from './wallpaper';
 
 const Dashboard = ()=>{
     const [movies, setMovies] = useState([]);

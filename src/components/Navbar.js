@@ -2,11 +2,13 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Login from './LoginModel';
 
 const logoUrl = "https://1000logos.net/wp-content/uploads/2017/05/Netflix-Logo.png"
 
 function BasicExample() {
-  return (
+
+    return (
     <Navbar className="bg-body-tertiary">
       <Container>
         <Navbar.Brand href="#home">
@@ -21,7 +23,7 @@ function BasicExample() {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            Signed in as: <a href="#login">Mark Otto</a>
+            <Login></Login>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>

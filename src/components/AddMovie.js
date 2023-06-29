@@ -1,29 +1,85 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form'
+
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAt8L_3lRhoM7mx1S2bby0nkOmhuMEFMQI",
+    authDomain: "gg-movies-app.firebaseapp.com",
+    projectId: "gg-movies-app",
+    storageBucket: "gg-movies-app.appspot.com",
+    messagingSenderId: "282048535921",
+    appId: "1:282048535921:web:7a828611104feaa6542ad0"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 function Example() {
   const [show, setShow] = useState(false);
+  const [type, setType] = useState("series");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("")
+  const [bannerUrl, setBannerUrl] = useState("");
+  const [coverUrl, setCoverUrl] = useState("");
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleAdd = () => {
+    
+  };
+  const handleShow = () => setShow(false);
+  const prepareForAdding = ()=>{
+    window.addEventListener('keydown', (event)=>{
+        if(event.shiftKey && event.key === 'enter'){
+            alert('shift pressed')
+        }
+    })
+}
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
+      <Button variant="primary" onClick={()=>{setShow(true)}} onLoad={prepareForAdding}>
+        Add new show/movie
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleShow}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Add new show</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Body style={{display:'flex',flexFlow:'column'}}>
+            <Form.Select onChange={(e)=>{
+                console.log(e.target.value);
+                setType(e.target.value);
+                }}>
+                <option>-- Select Type --</option>
+                <option value={"series"}>Show/Series</option>
+                <option value={"movie"}>Movie</option>
+            </Form.Select>
+            <Form.Label htmlFor='eTitle' style={{paddingTop:'20px'}}>Title:</Form.Label>
+            <Form.Control type='text' placeholder={`name of the ${type}`} onChange={(e)=>{
+                console.log(e.target.value)
+                setTitle(e.target.value)
+            }} id='eTitle'/>
+            <Form.Label htmlFor='eCoverUrl' style={{paddingTop:'20px'}}>Cover URL:</Form.Label>
+            <Form.Control type='text' placeholder={`cover for ${title}`} id='eCoverUrl'/>
+            <Form.Label htmlFor='eBannerUrl' style={{paddingTop:'20px'}}>Banner URL:</Form.Label>
+            <Form.Control type='text' placeholder={`banner for ${title}`} id='eBannerUrl'/>
+
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label htmlFor='eDescription'>Description</Form.Label>
+                <Form.Control as="textarea" rows={3} id='eDescription'/>
+            </Form.Group>
+            
+            {/* <Form.Text placeholder={`description of the ${title} ${type}`}/> */}
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
+          <Button variant="secondary" onClick={handleAdd}>
+            {type == "series" ? "Add Series" : "Add Movie"}
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleShow}>
             Save Changes
           </Button>
         </Modal.Footer>
