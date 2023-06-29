@@ -1,7 +1,6 @@
 import * as functions from "firebase-functions";
 
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase-admin";
 
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
@@ -19,16 +18,33 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+
+const db = app.firestore();
 
 // // Start writing functions
 // // https://firebase.google.com/docs/functions/typescript
 //
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+export const helloWorld = functions.https.onRequest((request, response) => {
+  functions.logger.info("Hello logs!", {structuredData: true});
+  response.send("Hello from Firebase!");
+});
 
-exports.getShows = functions.https.onCall((data,context)=>{
+export const getShows = functions.https.onCall(async(data,context)=>{
+    const coll = db.collection("movies");
+    const docs =(await coll.get()).docs;
+    const output = {
+        movies:[],
+        error:false,
+        errorMessage:null
+    }
+
+    docs.forEach((doc)=>{
+        const movie = doc.data();
+        movie.id = doc.id;
+
+        output.movies.push(movie);
+    })
     
+
+    return output;
 })

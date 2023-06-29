@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form'
 
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAt8L_3lRhoM7mx1S2bby0nkOmhuMEFMQI",
@@ -18,6 +18,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const coll = collection(db, "movies");
 
 function Example() {
   const [show, setShow] = useState(false);
@@ -28,7 +29,18 @@ function Example() {
   const [coverUrl, setCoverUrl] = useState("");
 
   const handleAdd = () => {
-    
+    // const title =
+    addDoc(coll, {
+        title: title,
+        description: description,
+        bannerUrl: bannerUrl,
+        coverUrl: coverUrl,
+        type:type
+    }).then((doc)=>{
+        console.log(doc);
+    }).catch(e =>{
+        console.log(e)
+    })
   };
   const handleShow = () => setShow(false);
   const prepareForAdding = ()=>{
@@ -63,14 +75,20 @@ function Example() {
                 console.log(e.target.value)
                 setTitle(e.target.value)
             }} id='eTitle'/>
-            <Form.Label htmlFor='eCoverUrl' style={{paddingTop:'20px'}}>Cover URL:</Form.Label>
-            <Form.Control type='text' placeholder={`cover for ${title}`} id='eCoverUrl'/>
+            <Form.Label htmlFor='eCoverUrl' style={{paddingTop:'20px'}} >Cover URL:</Form.Label>
+            <Form.Control type='text' placeholder={`cover for ${title}`} id='eCoverUrl' onChange={(e)=>{
+                setCoverUrl(e.target.value)
+            }}/>
             <Form.Label htmlFor='eBannerUrl' style={{paddingTop:'20px'}}>Banner URL:</Form.Label>
-            <Form.Control type='text' placeholder={`banner for ${title}`} id='eBannerUrl'/>
+            <Form.Control type='text' placeholder={`banner for ${title}`} id='eBannerUrl' onChange={(e)=>{
+                setBannerUrl(e.target.value)
+            }}/>
 
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Group className="mb-3">
                 <Form.Label htmlFor='eDescription'>Description</Form.Label>
-                <Form.Control as="textarea" rows={3} id='eDescription'/>
+                <Form.Control as="textarea" rows={3} id='eDescription' onChange={(e)=>{
+                setDescription(e.target.value)
+            }}/>
             </Form.Group>
             
             {/* <Form.Text placeholder={`description of the ${title} ${type}`}/> */}
