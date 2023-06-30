@@ -2,6 +2,8 @@
 
 This is a React application hosted on Google Firebase.
 
+Project link: https://gg-movies-app.web.app/
+
 ## API
 To get the list of all the movies:
 GET: https://getmovies-7zadiu7kva-uc.a.run.app
