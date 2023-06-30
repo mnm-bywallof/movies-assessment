@@ -1,4 +1,17 @@
-# Getting Started with Create React App
+# Games Global Movie Assessment
+
+This is a React application hosted on Google Firebase.
+
+## API
+To get the list of all the movies:
+GET: https://getmovies-7zadiu7kva-uc.a.run.app
+
+To get the information about a movie:
+GET: https://getmovie-7zadiu7kva-uc.a.run.app
+*require 'id' as a param.
+
+To get the information about this project:
+GET: https://getdevelopmentdetails-7zadiu7kva-uc.a.run.app
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
