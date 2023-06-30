@@ -94,11 +94,8 @@ function Example() {
             {/* <Form.Text placeholder={`description of the ${title} ${type}`}/> */}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleAdd}>
+          <Button variant="primary" onClick={handleAdd}>
             {type == "series" ? "Add Series" : "Add Movie"}
-          </Button>
-          <Button variant="primary" onClick={handleShow}>
-            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>

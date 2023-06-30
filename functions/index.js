@@ -33,14 +33,17 @@ exports.getShows = onCall(async (data,context) =>{
     docs.forEach(async doc => {
         let d = doc.data();
         d['id'] = doc.id;
+        var randomNumber = Math.floor(Math.random() * (100 - 60 + 1)) + 60;
+        d['likes'] = randomNumber;
         showsData.list.push(d);
-    })
+    });
 
     showsData.list.forEach(async(x)=>{
         x['watched'] = false;
+        // x['likes'] = 0;
         const watched = (await db.collection("watched").where("movieID", "==", x.id).get()).docs;
         x['watched'] = watched.length != 0;
-    })
+    });
 
     for(var i = 0; i < showsData.list.length; ++ i){
         // showsData.list[i].watched = false;
@@ -118,3 +121,23 @@ exports.getDevelopmentDetails = onRequest((request,response)=>{
         description: 'Create a web application for tracking shows and movies users have watched.'
     })
 });
+
+exports.search = onCall(async(response)=>{
+    var term = response.data.term;
+    const results = {
+        movies:[]
+    }
+    const docs = (await db.collection("movies").get()).docs;
+
+    docs.forEach((doc)=>{
+        var movie = doc.data();
+        movie['id'] = doc.id;
+        var title = movie.title.toLowerCase();
+
+        if(title.includes(term.toLowerCase())){
+            results.movies.push(movie);
+        }
+    });
+
+    return results;
+})

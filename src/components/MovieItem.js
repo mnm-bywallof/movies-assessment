@@ -11,9 +11,9 @@ function MoviewCard(props) {
             <Card.Body>
                 <Card.Title>{`${movie.title}`}</Card.Title>
                 <Card.Text>
-                {`${movie.description}`}
+                {`${movie.type.toUpperCase()}`} &#x2022; {`${movie.likes}% LiKED`}
                 </Card.Text>
-                <MovieInfo text={"Open"}></MovieInfo>
+                <MovieInfo text={"Open"} movie={movie}></MovieInfo>
             </Card.Body>
             </Card>
         </>
