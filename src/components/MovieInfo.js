@@ -2,16 +2,14 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function Example() {
+function MovieInfo(movieProps) {
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
+      <Button variant="primary" onClick={handleShow} style={{marginRight:'5px'}}>
+        {`${movieProps.text}`}
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -32,4 +30,4 @@ function Example() {
   );
 }
 
-export default Example;
+export default MovieInfo;
