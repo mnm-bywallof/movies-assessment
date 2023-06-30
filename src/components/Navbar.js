@@ -3,6 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Login from './LoginModel';
+import Search from './SearchPage';
 
 const logoUrl = "https://1000logos.net/wp-content/uploads/2017/05/Netflix-Logo.png"
 
@@ -22,9 +23,10 @@ function BasicExample() {
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
-          <Navbar.Text>
-            <Login></Login>
-          </Navbar.Text>
+            <Search/>
+            <Navbar.Text>
+                <Login></Login>
+            </Navbar.Text>
         </Navbar.Collapse>
       </Container>
     </Navbar>
