@@ -1,3 +1,4 @@
+![alt text](https://igamingidol.com/wp-content/uploads/2022/08/Games-Global-Logo.jpg)
 # Games Global Movie Assessment
 
 This is a React application hosted on Google Firebase.
