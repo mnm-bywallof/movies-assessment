@@ -24,7 +24,7 @@ const Dashboard = ()=>{
     useEffect(()=>{
         const calbShows = httpsCallable(functions, "getShows");
         calbShows().then((results)=>{
-            console.log(results.data);
+            // console.log(results.data);
             setMovies(results.data.list);
         }).catch( e => {
             console.error(e);
@@ -32,8 +32,11 @@ const Dashboard = ()=>{
     }, [])
 
     return (
-        <Container>
-            <Row style={{justifyContent:'center'}}>
+        <Container fluid style={{textAlign:'center'}}>
+            <Wallpaper/>
+
+            <h1 style={{marginTop:'30px'}}>More for you</h1>
+            <Row style={{justifyContent:'center', display:'flex',flexFlow:'row',flexWrap:'wrap',}}>
                 {movies.map((item, index) => (
                     <MovieCard movie={item} key={item.id}/>
                 ))}

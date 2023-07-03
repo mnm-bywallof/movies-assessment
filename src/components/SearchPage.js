@@ -6,6 +6,7 @@ import {Row, Col, Container} from 'react-bootstrap'
 
 import { initializeApp } from 'firebase/app';
 import { getFunctions, httpsCallable } from 'firebase/functions';
+import { Link } from 'react-router-dom';
 
 const app = initializeApp({
     apiKey: "AIzaSyAt8L_3lRhoM7mx1S2bby0nkOmhuMEFMQI",
@@ -32,14 +33,8 @@ const Search = ()=>{
         })
     }, [term])
     return (
-        <>
-        <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Search</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            {/* <Form.Label htmlFor='eTitle' style={{paddingTop:'20px'}}>Search title:</Form.Label> */}
-            <Form.Control type='text' placeholder={`Tile, description or type`} onChange={(e)=>{
+        <Container style={{justifyContent:'center',alignItems:'center',maxWidth:'500px'}}>
+        <Form.Control type='text' placeholder={`Tile, description or type`} onChange={(e)=>{
                 console.log(e.target.value)
                 setTerm(e.target.value);
             }} id='eTitle'/>
@@ -48,18 +43,7 @@ const Search = ()=>{
                 movies.map((movie)=> (<MovieItem movie={movie} key={movie.id}/>))
             }
             </Col>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Button variant="primary" onClick={()=>{setShow(true)}} style={{marginRight:'5px'}}>
-        {`Search`}
-      </Button>
-        </>
+        </Container>
     );
 }
 
@@ -69,11 +53,12 @@ const MovieItem = (props)=>{
         <div style={{display:'flex',flexFlow:'row', padding:'10px', border:'1px solid transparent', marginBottom:'10px'}}>
         <img src={`${movie.coverUrl}`} height={'100px'} width={'auto' }  style={{padding:'10px'}}/>
         <span style={{width:'50%', display:'flex',flexFlow:'column',justifyContent:'center'}}>
-            <h3>{`${movie.title}`}</h3>
-            <lable>{`${movie.type}`}</lable>
+            <h3 style={{padding:'0px',margin:'0px'}}>{`${movie.title}`}</h3>
+            <label>{`${movie.type}`}</label>
             {/* <lable>{`${movie.type}`}</lable> */}
         </span>
-        <Button onClick={()=>{}} style={{width:'30%', height:'50px'}} className="btn btn-danger">Delete</Button>
+        <Link state={movie} to={"/movie"} style={{height:'50px',
+        display:'flex',flexFlow:'column',margin:'auto 0',justifyContent:'center'}}><Button onClick={()=>{}} className="btn btn-primary">Watch</Button></Link>
         </div>
     );
 }
