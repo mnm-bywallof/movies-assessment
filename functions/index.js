@@ -141,3 +141,71 @@ exports.search = onCall(async(response)=>{
 
     return results;
 })
+
+exports.watched = onCall( async (request)=>{
+    const response = {}
+    
+    if(!request.auth){
+        response['error'] = true;
+        response['message'] = "No user found!";
+    }else if(!request.data.id){
+        response['error'] = true;
+        response['message'] = "Missing Movie ID";
+    }
+    //if all the check marks are good
+    else{
+        const movieID = request.data.id;
+        const userID = request.auth.uid;
+        const movieDoc = (await db.doc("movies/"+movieID).get());
+        const completeData = movieDoc.data();
+        response['movieID'] = movieID;
+        response['movie'] = completeData;
+
+        //if the movie object does not contain the watched object then create a new array
+        completeData['watched'] = completeData.watched || new Array();
+
+        completeData['watched'].push(userID);
+        await db.doc("movies/"+movieID).update({
+            "watched": completeData['watched']
+        }).then(()=>{
+            response['watched'] = true;
+        }).catch(()=>{
+            response['watched'] = false;
+        })
+    }
+
+    return response;
+})
+
+exports.getUserDetails = onCall(async(request)=>{
+    const response = {
+        uid:request.auth.uid,
+        movies:[]
+    }
+
+    const uid = request.auth.uid;
+
+    const list = (await db.collection("movies").where("watched","array-contains", uid).get()).docs
+
+    list.forEach(movie => {
+        var mov = movie.data();
+        mov.id = movie.id;
+        response.movies.push(mov);
+    });
+    
+    return response;
+})
+
+exports.deleteMovie = onCall(async(request)=>{
+    const response = {
+        id: request.data.id,
+        deleted: false
+    };
+    await db.doc("movies/"+request.data.id).delete().then((del)=>{
+        response['deleted'] = true;
+    }).catch((err)=>{
+        response['deleted'] = false;
+    })
+
+    return response;
+})

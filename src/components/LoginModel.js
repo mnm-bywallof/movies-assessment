@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import logo from './constants/logo';
 import { initializeApp } from "firebase/app";
+import { getFunctions, httpsCallable } from 'firebase/functions';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth";
 
 const firebaseConfig = {
@@ -16,6 +17,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+const functions = getFunctions(app);
+
 const provider = new GoogleAuthProvider();
 provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
@@ -23,20 +26,27 @@ const Login = ()=>{
     const auth = getAuth();
     const [loggedInUser, setUserLoggedIn] = useState(undefined)
     const [visible, setVisible] = useState(false);
+    const [movies, setMovies] = useState([]);
 
     useEffect(()=>{
         onAuthStateChanged(auth, user=>{
             if(user){
                 setUserLoggedIn(user);
+                const getUserDetails = httpsCallable(functions, "getUserDetails");
+                getUserDetails({}).then((details)=>{
+                    console.log(details);
+                    setMovies(details.data.movies);
+                }).catch(e=>{
+                    console.log(e);
+                })
             }else{
                 setUserLoggedIn(undefined);
             }
         })
-    })
+    }, [loggedInUser])
 
     const handleClose = ()=> setVisible(false);
     const googleSignIn = ()=>{
-
         if(loggedInUser){
             signOut(auth).then(()=>{
                 setUserLoggedIn(undefined);
@@ -53,6 +63,12 @@ const Login = ()=>{
                 // The signed-in user info.
                 const user = result.user;
                 // IdP data available using getAdditionalUserInfo(result)
+                const getUserDetails = httpsCallable(functions, "getUserDetails");
+                getUserDetails({}).then((details)=>{
+                    console.log(details)
+                }).catch(e=>{
+                    console.log(e);
+                })
                 // ...
             }).catch((error) => {
                 // Handle Errors here.
@@ -75,7 +91,12 @@ const Login = ()=>{
         </Modal.Header> */}
         <Modal.Body style={{display:'flex',flexFlow:'column',justifyContent:'center',textAlign:'center'}}>
             <img src={logo} width={'50px'} height={'auto'} style={{textAlign:'center',margin:'0 auto'}}/>
-            <label>Something new is coming</label>
+            {
+                loggedInUser ? loggedInUser.email :'Sign in to view the best movies the world of Netflix has to offer.'
+            }
+            <label>
+                {movies.length > 0 ? "You have watched " + movies.length +" movies" : "No movies recorded."}
+            </label>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={googleSignIn}>
@@ -86,7 +107,7 @@ const Login = ()=>{
           </Button>
         </Modal.Footer>
       </Modal>
-      <label onClick={()=>{setVisible(true)}}>{loggedInUser ? `${loggedInUser.email}` : "Sign in"}</label>
+      <label onClick={()=>{setVisible(true)}}>{loggedInUser ? `${"Account"}` : "Sign in"}</label>
         </>
     )
 }

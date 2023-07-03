@@ -27,6 +27,8 @@ function Example() {
   const [description, setDescription] = useState("")
   const [bannerUrl, setBannerUrl] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
+  const [genre, setGenre] = useState("");
+  const [year, setYear] = useState(2023);
 
   const handleAdd = () => {
     // const title =
@@ -35,7 +37,9 @@ function Example() {
         description: description,
         bannerUrl: bannerUrl,
         coverUrl: coverUrl,
-        type:type
+        type:type,
+        genre:genre,
+        year:year
     }).then((doc)=>{
         console.log(doc);
     }).catch(e =>{
@@ -83,6 +87,25 @@ function Example() {
             <Form.Control type='text' placeholder={`banner for ${title}`} id='eBannerUrl' onChange={(e)=>{
                 setBannerUrl(e.target.value)
             }}/>
+
+            <Form.Label htmlFor='eYear' style={{paddingTop:'20px'}}>Year:</Form.Label>
+            <Form.Control type='text' placeholder={`year of release`} id='eYear' onChange={(e)=>{
+                setYear(parseInt(e.target.value))
+            }}/>
+
+            <Form.Group className="mb-3">
+                <Form.Label>Genre:</Form.Label>
+                <Form.Select onChange={(e)=>{
+                  console.log(e.target.value);
+                  setGenre(e.target.value);
+                  }}>
+                    <option>-- Select Genre --</option>
+                    <option value={"Action"}>Action</option>
+                    <option value={"Romance"}>Romance</option>
+                    <option value={"Comedy"}>Comedy</option>
+                    <option value={"Anime"}>Anime</option>
+                </Form.Select>
+            </Form.Group>
 
             <Form.Group className="mb-3">
                 <Form.Label htmlFor='eDescription'>Description</Form.Label>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import MoviewInfo from './MovieInfo';
+import Support from './Supports';
 
 import { initializeApp } from 'firebase/app';
 import { getFunctions, httpsCallable } from 'firebase/functions';
@@ -32,6 +33,14 @@ const Wallpaper = (props)=>{
         }).catch(e => console.error(e));
     }, []);
 
+    const watched = ()=>{
+        const setWatched = httpsCallable(functions, "watched");
+        setWatched({id:movie.id}).then((value)=>{
+            console.log(value);
+            // setMovie(value.data.item);
+        }).catch(e => console.error(e));
+    }
+
     return (
         <Container fluid style={{backgroundColor:'tomato', minHeight:'70vh', 
         backgroundImage:`url(${movie.bannerUrl})`,
@@ -41,11 +50,12 @@ const Wallpaper = (props)=>{
             paddingTop:'100px',width:'100%',padding:'0px',display:'flex',flexFlow:'row',justifyContent:'center'}}>
                 <div style={{margin:'0 auto',textAlign:'center', maxWidth: '500px', paddingBottom:'50px', color:'whitesmoke'}}>
                     <img src={`${movie.coverUrl}`}
-                        width={'200px'} height={'auto'} style={{border:'black 2px solid'}}/>
+                        width={'200px'} height={'auto'} style={{border:'black 2px solid', marginTop:'50px'}}/>
                     <h1 style={{fontFamily:'sans-serif'}}>{`${movie.title}`}</h1>
-                    <label>{`${movie.description}`}</label>
-                    <MoviewInfo text={"More"} movie={movie}></MoviewInfo>
-                    <Button type='button'>Watched</Button>
+                    {/* <label>{`${movie.description}`}</label> */}
+                    <Support/>
+                    {/* <MoviewInfo text={"More"} movie={movie}></MoviewInfo> */}
+                    <Button type='button' onClick={()=> watched()}>Watched</Button>
                 </div>
             </div>
         </Container>

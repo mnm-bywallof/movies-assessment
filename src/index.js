@@ -3,14 +3,35 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Dashboard from './components/Dashboard'
+import Search from './components/SearchPage'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer';
+import MovieInfo from './components/MovieInfo';
+
+const router = createBrowserRouter([
+  {
+    path:'/',
+    element: <Dashboard/>
+  },
+  {
+    path:'/search',
+    element: <Search/>
+  },
+  {
+    path:'/movie',
+    element: <MovieInfo/>,
+    errorElement: <h1>Opps! Something is up!</h1>
+  }
+])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App/>
-    </BrowserRouter>
+    <Navbar/>
+    <RouterProvider router={router}/>
+    <Footer/>
   </React.StrictMode>
 );
 
